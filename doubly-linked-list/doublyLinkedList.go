@@ -22,16 +22,21 @@ func (n *DoublyLinkedListNode) Prepend(val int) {
 			value: val,
 			next:  nil,
 		}
+		length++
 		return
 	}
 
-	Head = &DoublyLinkedListNode{
+	newNode := &DoublyLinkedListNode{
 		prev:  nil,
 		value: val,
 		next:  n,
 	}
 
-	// fmt.Println("New head: ", Head.value)
+	n.prev = newNode
+
+	Head = newNode
+
+	fmt.Println("New head: ", Head.value)
 	length++
 }
 
@@ -42,6 +47,7 @@ func (n *DoublyLinkedListNode) Append(val int) {
 			value: val,
 			next:  nil,
 		}
+		length++
 		return
 	}
 
@@ -72,18 +78,20 @@ func (n *DoublyLinkedListNode) Delete(val int) {
 	current := n
 
 	for current != nil {
-		if current.value == val && current.prev == nil {
-			current.next.prev = nil
-			Head = current.next
-		} else if current.value == val && current.next == nil {
-			current.prev.next = nil
-			return
-		} else if current.value == val {
-			current.next.prev = current.prev
-			current.prev.next = current.next
-			return
+		if current.value == val {
+			if current.prev == nil {
+				Head = current.next
+				if Head != nil {
+					Head.prev = nil
+				}
+			} else if current.next == nil {
+				current.prev.next = nil
+			} else {
+				current.prev.next = current.next
+				current.next.prev = current.prev
+			}
+			length--
 		}
-
 		current = current.next
 	}
 }
@@ -108,18 +116,18 @@ func (n *DoublyLinkedListNode) Clear() {
 }
 
 func DemonstrateDoublyLinkedList() {
-	// Head.Prepend(5)
+	Head.Prepend(5)
 	Head.Append(6)
-	// Head.Prepend(7)
+	Head.Prepend(7)
 	Head.Append(8)
-	// Head.Prepend(9)
-	// Head.Append(10)
-	// Head.Prepend(1)
+	Head.Prepend(9)
+	Head.Append(10)
+	Head.Prepend(1)
 
 	Head.List()
-	// Head.Delete(1)
-	// Head.Delete(6)
-	// Head.List()
+	Head.Delete(1)
+	Head.Delete(6)
+	Head.List()
 	fmt.Println("Length: ", Head.Length())
 	Head.Clear()
 }

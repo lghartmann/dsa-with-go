@@ -20,6 +20,7 @@ func (n *LinkedListNode) Prepend(val int) {
 			value: val,
 			next:  nil,
 		}
+		length++
 		return
 	}
 
@@ -39,6 +40,7 @@ func (n *LinkedListNode) Append(val int) {
 			value: val,
 			next:  nil,
 		}
+		length++
 		return
 	}
 
@@ -74,6 +76,7 @@ func (n *LinkedListNode) Delete(val int) {
 			} else {
 				oldNode.next = currentNode.next
 			}
+			length--
 		}
 		oldNode = currentNode
 		currentNode = currentNode.next
