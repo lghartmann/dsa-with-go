@@ -5,6 +5,7 @@ import (
 	"os"
 	"strings"
 
+	doublyLinkedList "github.com/lghartmann/data-structures-in-go/doubly-linked-list"
 	linkedList "github.com/lghartmann/data-structures-in-go/linked-list"
 )
 
@@ -16,16 +17,17 @@ func main() {
 	// 	os.Exit(1)
 	// }
 
-	var test = "linked_list"
+	var teste = "doubly_linked_list"
 
-	switch strings.ToLower(test) {
+	switch strings.ToLower(teste) {
 	case "linked_list":
 		fmt.Println("Begin linked list:")
 		linkedList.DemonstrateLinkedList()
 	case "try":
 		fmt.Println("Try")
 	case "doubly_linked_list":
-		fmt.Println("Doubly Linked List")
+		fmt.Println("Begin Doubly Linked List:")
+		doublyLinkedList.DemonstrateDoublyLinkedList()
 	default:
 		fmt.Println("The options are: \n", "linked_list\n", "try\n", "doubly_linked_list\n")
 		os.Exit(1)

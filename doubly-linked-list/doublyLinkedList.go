@@ -3,36 +3,48 @@ package doublyLinkedList
 import "fmt"
 
 var length = 0
-var Head *DoublyLinkedList
+var Head *DoublyLinkedListNode
 
-type DoublyLinkedList struct {
-	prev  *DoublyLinkedList
+type DoublyLinkedListNode struct {
+	prev  *DoublyLinkedListNode
 	value int
-	next  *DoublyLinkedList
+	next  *DoublyLinkedListNode
 }
 
-func (n *DoublyLinkedList) Length() int {
+func (n *DoublyLinkedListNode) Length() int {
 	return length
 }
 
-func (n *DoublyLinkedList) Prepend(val int) *DoublyLinkedList {
-	current := n
-
-	// we have to guarantee the iteration through the start of the doubly linked list
-	for current.prev != nil {
-		current = current.prev
+func (n *DoublyLinkedListNode) Prepend(val int) {
+	if n == nil {
+		Head = &DoublyLinkedListNode{
+			prev:  nil,
+			value: val,
+			next:  nil,
+		}
+		return
 	}
 
-	current.prev = &DoublyLinkedList{
+	Head = &DoublyLinkedListNode{
 		prev:  nil,
 		value: val,
-		next:  current,
+		next:  n,
 	}
-	fmt.Println("New head: ", current.prev.value)
-	return current.prev
+
+	// fmt.Println("New head: ", Head.value)
+	length++
 }
 
-func (n *DoublyLinkedList) Append(val int) {
+func (n *DoublyLinkedListNode) Append(val int) {
+	if n == nil {
+		Head = &DoublyLinkedListNode{
+			prev:  nil,
+			value: val,
+			next:  nil,
+		}
+		return
+	}
+
 	current := n
 
 	// we have to guarantee the iteration through the end of the doubly linked list
@@ -40,39 +52,74 @@ func (n *DoublyLinkedList) Append(val int) {
 		current = current.next
 	}
 
-	current.next = &DoublyLinkedList{
+	current.next = &DoublyLinkedListNode{
 		prev:  current,
 		value: val,
 		next:  nil,
 	}
 
+	length++
 	fmt.Println("Head remains: ", n.value)
 }
 
-func (n *DoublyLinkedList) Delete(val int) *DoublyLinkedList {
+func (n *DoublyLinkedListNode) Delete(val int) {
 	if n.Length() <= 1 {
 		// no node will be deleted if we have a single node in our list
 		fmt.Println("Your linked list has less than 2 nodes")
-		return n
+		return
 	}
 
 	current := n
 
-	// we have to guarantee iteration starting from the first node
-	for current.prev != nil {
-		current = current.prev
-	}
-
 	for current != nil {
-		if current.value == val {
-			// we need to update the previous value of the next node to nil (it will be the next head)
+		if current.value == val && current.prev == nil {
 			current.next.prev = nil
-			// return the next node to reassing the head
-			return current.next
+			Head = current.next
+		} else if current.value == val && current.next == nil {
+			current.prev.next = nil
+			return
+		} else if current.value == val {
+			current.next.prev = current.prev
+			current.prev.next = current.next
+			return
 		}
+
 		current = current.next
 	}
+}
 
-	// if node val is not found, return head
-	return current
+func (n *DoublyLinkedListNode) List() {
+	if n.Length() == 0 {
+		fmt.Println("No nodes in your list")
+		return
+	}
+
+	current := n
+
+	for current != nil {
+		fmt.Println("Value: ", current.value, "Prev: ", current.prev, "Next: ", current.next)
+		current = current.next
+	}
+}
+
+func (n *DoublyLinkedListNode) Clear() {
+	fmt.Println("LOL NO NEED TO FREE MEMORY")
+	Head = nil
+}
+
+func DemonstrateDoublyLinkedList() {
+	// Head.Prepend(5)
+	Head.Append(6)
+	// Head.Prepend(7)
+	Head.Append(8)
+	// Head.Prepend(9)
+	// Head.Append(10)
+	// Head.Prepend(1)
+
+	Head.List()
+	// Head.Delete(1)
+	// Head.Delete(6)
+	// Head.List()
+	fmt.Println("Length: ", Head.Length())
+	Head.Clear()
 }

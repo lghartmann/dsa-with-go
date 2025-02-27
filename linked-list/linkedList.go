@@ -14,7 +14,15 @@ func (n *LinkedListNode) Length() int {
 	return length
 }
 
-func (n *LinkedListNode) Prepend(val int) *LinkedListNode {
+func (n *LinkedListNode) Prepend(val int) {
+	if n == nil {
+		Head = &LinkedListNode{
+			value: val,
+			next:  nil,
+		}
+		return
+	}
+
 	newNode := &LinkedListNode{
 		value: val,
 		next:  n,
@@ -22,11 +30,18 @@ func (n *LinkedListNode) Prepend(val int) *LinkedListNode {
 	length++
 
 	fmt.Println("New head: ", val)
-	// we have to return the new node so we can reassign head's value to the new node
-	return newNode
+	Head = newNode
 }
 
 func (n *LinkedListNode) Append(val int) {
+	if n == nil {
+		Head = &LinkedListNode{
+			value: val,
+			next:  nil,
+		}
+		return
+	}
+
 	newNode := &LinkedListNode{
 		value: val,
 		next:  nil,
@@ -40,14 +55,13 @@ func (n *LinkedListNode) Append(val int) {
 	current.next = newNode
 	fmt.Println("Head remains: ", n.value)
 	length++
-	// no return needed since we didn't prepend the node and the head remains the same
 }
 
-func (n *LinkedListNode) Delete(val int) *LinkedListNode {
+func (n *LinkedListNode) Delete(val int) {
 	if n.Length() <= 1 {
 		// no node will be deleted if we have a single node in our list
 		fmt.Println("Your linked list has less than 2 nodes")
-		return n
+		return
 	}
 
 	var oldNode *LinkedListNode = nil
@@ -56,21 +70,22 @@ func (n *LinkedListNode) Delete(val int) *LinkedListNode {
 	for currentNode != nil {
 		if currentNode.value == val {
 			if oldNode == nil {
-				// since we're working with a garbage collected language we just return the next node and let it rip
-				return currentNode.next
+				Head = n.next
 			} else {
 				oldNode.next = currentNode.next
 			}
-			return oldNode
 		}
 		oldNode = currentNode
 		currentNode = currentNode.next
 	}
-	// if node value is not found return the head calling it
-	return n
 }
 
 func (n *LinkedListNode) List() {
+	if n.Length() == 0 {
+		fmt.Println("No nodes in your list")
+		return
+	}
+
 	current := n
 	for current != nil {
 		fmt.Println("Value: ", current.value, "Next: ", current.next)
@@ -78,24 +93,25 @@ func (n *LinkedListNode) List() {
 	}
 }
 
-func (n *LinkedListNode) Clear() *LinkedListNode {
+func (n *LinkedListNode) Clear() {
 	fmt.Println("LOL NO NEED TO FREE MEMORY")
-	return nil
+	Head = nil
 }
 
 func DemonstrateLinkedList() {
-	Head = Head.Prepend(5)
+	Head.Prepend(5)
 	Head.Append(6)
-	Head = Head.Prepend(7)
+	Head.Prepend(7)
 	Head.Append(8)
-	Head = Head.Prepend(9)
+	Head.Prepend(9)
 	Head.Append(10)
-	Head = Head.Prepend(1)
-
-	Head = Head.Delete(1)
+	Head.Prepend(1)
 
 	Head.List()
+	Head.Delete(1)
+	Head.Delete(6)
+	Head.List()
 	fmt.Println(Head.Length())
-	Head = Head.Clear()
+	Head.Clear()
 	fmt.Println("Cleared List: ", Head)
 }
