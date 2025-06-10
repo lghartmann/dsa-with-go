@@ -1,9 +1,9 @@
-package linkedList
+package datastructures
 
 import "fmt"
 
-var length int = 0
-var Head *LinkedListNode
+var linkedLength int = 0
+var LinkedHead *LinkedListNode
 
 type LinkedListNode struct {
 	value int
@@ -11,16 +11,16 @@ type LinkedListNode struct {
 }
 
 func (n *LinkedListNode) Length() int {
-	return length
+	return linkedLength
 }
 
 func (n *LinkedListNode) Prepend(val int) {
 	if n == nil {
-		Head = &LinkedListNode{
+		LinkedHead = &LinkedListNode{
 			value: val,
 			next:  nil,
 		}
-		length++
+		linkedLength++
 		return
 	}
 
@@ -28,19 +28,19 @@ func (n *LinkedListNode) Prepend(val int) {
 		value: val,
 		next:  n,
 	}
-	length++
+	linkedLength++
 
 	fmt.Println("New head: ", val)
-	Head = newNode
+	LinkedHead = newNode
 }
 
 func (n *LinkedListNode) Append(val int) {
 	if n == nil {
-		Head = &LinkedListNode{
+		LinkedHead = &LinkedListNode{
 			value: val,
 			next:  nil,
 		}
-		length++
+		linkedLength++
 		return
 	}
 
@@ -55,8 +55,8 @@ func (n *LinkedListNode) Append(val int) {
 	}
 
 	current.next = newNode
-	fmt.Println("Head remains: ", n.value)
-	length++
+	fmt.Println("LinkedHead remains: ", n.value)
+	linkedLength++
 }
 
 func (n *LinkedListNode) Delete(val int) {
@@ -72,11 +72,11 @@ func (n *LinkedListNode) Delete(val int) {
 	for currentNode != nil {
 		if currentNode.value == val {
 			if oldNode == nil {
-				Head = n.next
+				LinkedHead = n.next
 			} else {
 				oldNode.next = currentNode.next
 			}
-			length--
+			linkedLength--
 		}
 		oldNode = currentNode
 		currentNode = currentNode.next
@@ -98,23 +98,23 @@ func (n *LinkedListNode) List() {
 
 func (n *LinkedListNode) Clear() {
 	fmt.Println("LOL NO NEED TO FREE MEMORY")
-	Head = nil
+	LinkedHead = nil
 }
 
 func DemonstrateLinkedList() {
-	Head.Prepend(5)
-	Head.Append(6)
-	Head.Prepend(7)
-	Head.Append(8)
-	Head.Prepend(9)
-	Head.Append(10)
-	Head.Prepend(1)
+	LinkedHead.Prepend(5)
+	LinkedHead.Append(6)
+	LinkedHead.Prepend(7)
+	LinkedHead.Append(8)
+	LinkedHead.Prepend(9)
+	LinkedHead.Append(10)
+	LinkedHead.Prepend(1)
 
-	Head.List()
-	Head.Delete(1)
-	Head.Delete(6)
-	Head.List()
-	fmt.Println(Head.Length())
-	Head.Clear()
-	fmt.Println("Cleared List: ", Head)
+	LinkedHead.List()
+	LinkedHead.Delete(1)
+	LinkedHead.Delete(6)
+	LinkedHead.List()
+	fmt.Println(LinkedHead.Length())
+	LinkedHead.Clear()
+	fmt.Println("Cleared List: ", LinkedHead)
 }

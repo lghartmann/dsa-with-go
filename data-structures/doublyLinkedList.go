@@ -1,9 +1,9 @@
-package doublyLinkedList
+package datastructures
 
 import "fmt"
 
-var length = 0
-var Head *DoublyLinkedListNode
+var doublyLength = 0
+var DoublyHead *DoublyLinkedListNode
 
 type DoublyLinkedListNode struct {
 	prev  *DoublyLinkedListNode
@@ -12,17 +12,17 @@ type DoublyLinkedListNode struct {
 }
 
 func (n *DoublyLinkedListNode) Length() int {
-	return length
+	return doublyLength
 }
 
 func (n *DoublyLinkedListNode) Prepend(val int) {
 	if n == nil {
-		Head = &DoublyLinkedListNode{
+		DoublyHead = &DoublyLinkedListNode{
 			prev:  nil,
 			value: val,
 			next:  nil,
 		}
-		length++
+		doublyLength++
 		return
 	}
 
@@ -34,20 +34,20 @@ func (n *DoublyLinkedListNode) Prepend(val int) {
 
 	n.prev = newNode
 
-	Head = newNode
+	DoublyHead = newNode
 
-	fmt.Println("New head: ", Head.value)
-	length++
+	fmt.Println("New head: ", DoublyHead.value)
+	doublyLength++
 }
 
 func (n *DoublyLinkedListNode) Append(val int) {
 	if n == nil {
-		Head = &DoublyLinkedListNode{
+		DoublyHead = &DoublyLinkedListNode{
 			prev:  nil,
 			value: val,
 			next:  nil,
 		}
-		length++
+		doublyLength++
 		return
 	}
 
@@ -64,8 +64,8 @@ func (n *DoublyLinkedListNode) Append(val int) {
 		next:  nil,
 	}
 
-	length++
-	fmt.Println("Head remains: ", n.value)
+	doublyLength++
+	fmt.Println("DoublyHead remains: ", n.value)
 }
 
 func (n *DoublyLinkedListNode) Delete(val int) {
@@ -80,9 +80,9 @@ func (n *DoublyLinkedListNode) Delete(val int) {
 	for current != nil {
 		if current.value == val {
 			if current.prev == nil {
-				Head = current.next
-				if Head != nil {
-					Head.prev = nil
+				DoublyHead = current.next
+				if DoublyHead != nil {
+					DoublyHead.prev = nil
 				}
 			} else if current.next == nil {
 				current.prev.next = nil
@@ -90,7 +90,7 @@ func (n *DoublyLinkedListNode) Delete(val int) {
 				current.prev.next = current.next
 				current.next.prev = current.prev
 			}
-			length--
+			doublyLength--
 		}
 		current = current.next
 	}
@@ -112,22 +112,22 @@ func (n *DoublyLinkedListNode) List() {
 
 func (n *DoublyLinkedListNode) Clear() {
 	fmt.Println("LOL NO NEED TO FREE MEMORY")
-	Head = nil
+	DoublyHead = nil
 }
 
 func DemonstrateDoublyLinkedList() {
-	Head.Prepend(5)
-	Head.Append(6)
-	Head.Prepend(7)
-	Head.Append(8)
-	Head.Prepend(9)
-	Head.Append(10)
-	Head.Prepend(1)
+	DoublyHead.Prepend(5)
+	DoublyHead.Append(6)
+	DoublyHead.Prepend(7)
+	DoublyHead.Append(8)
+	DoublyHead.Prepend(9)
+	DoublyHead.Append(10)
+	DoublyHead.Prepend(1)
 
-	Head.List()
-	Head.Delete(1)
-	Head.Delete(6)
-	Head.List()
-	fmt.Println("Length: ", Head.Length())
-	Head.Clear()
+	DoublyHead.List()
+	DoublyHead.Delete(1)
+	DoublyHead.Delete(6)
+	DoublyHead.List()
+	fmt.Println("Length: ", DoublyHead.Length())
+	DoublyHead.Clear()
 }
