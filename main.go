@@ -5,8 +5,7 @@ import (
 	"os"
 	"strings"
 
-	doublyLinkedList "github.com/lghartmann/data-structures-in-go/doubly-linked-list"
-	linkedList "github.com/lghartmann/data-structures-in-go/linked-list"
+	datastructures "github.com/lghartmann/dsa-with-go/data-structures"
 )
 
 func main() {
@@ -22,12 +21,12 @@ func main() {
 	switch strings.ToLower(teste) {
 	case "linked_list":
 		fmt.Println("Begin linked list:")
-		linkedList.DemonstrateLinkedList()
+		datastructures.DemonstrateLinkedList()
 	case "try":
 		fmt.Println("Try")
 	case "doubly_linked_list":
 		fmt.Println("Begin Doubly Linked List:")
-		doublyLinkedList.DemonstrateDoublyLinkedList()
+		datastructures.DemonstrateDoublyLinkedList()
 	default:
 		fmt.Println("The options are: \n", "linked_list\n", "try\n", "doubly_linked_list\n")
 		os.Exit(1)
