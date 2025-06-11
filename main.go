@@ -5,6 +5,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/lghartmann/dsa-with-go/algorithms"
 	datastructures "github.com/lghartmann/dsa-with-go/data-structures"
 )
 
@@ -15,6 +16,14 @@ func main() {
 	// 	fmt.Println("Correct usage: `go run main.go DATA_STRUCTURE_HERE`")
 	// 	os.Exit(1)
 	// }
+
+	testeInput := []int{8, 6, 5, 7, 4, 9, 1, 2, 3}
+
+	fmt.Println(testeInput)
+
+	algorithms.MergeSort(testeInput)
+
+	fmt.Println(testeInput)
 
 	var teste = "doubly_linked_list"
 
