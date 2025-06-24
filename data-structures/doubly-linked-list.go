@@ -2,8 +2,10 @@ package datastructures
 
 import "fmt"
 
-var doublyLength = 0
-var DoublyHead *DoublyLinkedListNode
+type DoublyLinkedList struct {
+	head   *DoublyLinkedListNode
+	length int
+}
 
 type DoublyLinkedListNode struct {
 	prev  *DoublyLinkedListNode
@@ -11,78 +13,57 @@ type DoublyLinkedListNode struct {
 	next  *DoublyLinkedListNode
 }
 
-func (n *DoublyLinkedListNode) Length() int {
-	return doublyLength
+func (l *DoublyLinkedList) Length() int {
+	return l.length
 }
 
-func (n *DoublyLinkedListNode) Prepend(val int) {
-	if n == nil {
-		DoublyHead = &DoublyLinkedListNode{
-			prev:  nil,
-			value: val,
-			next:  nil,
-		}
-		doublyLength++
-		return
-	}
-
+func (l *DoublyLinkedList) Prepend(val int) {
 	newNode := &DoublyLinkedListNode{
 		prev:  nil,
 		value: val,
-		next:  n,
+		next:  l.head,
 	}
-
-	n.prev = newNode
-
-	DoublyHead = newNode
-
-	fmt.Println("New head: ", DoublyHead.value)
-	doublyLength++
+	if l.head != nil {
+		l.head.prev = newNode
+	}
+	l.head = newNode
+	l.length++
+	fmt.Println("New head:", l.head.value)
 }
 
-func (n *DoublyLinkedListNode) Append(val int) {
-	if n == nil {
-		DoublyHead = &DoublyLinkedListNode{
-			prev:  nil,
-			value: val,
-			next:  nil,
-		}
-		doublyLength++
-		return
-	}
-
-	current := n
-
-	// we have to guarantee the iteration through the end of the doubly linked list
-	for current.next != nil {
-		current = current.next
-	}
-
-	current.next = &DoublyLinkedListNode{
-		prev:  current,
+func (l *DoublyLinkedList) Append(val int) {
+	newNode := &DoublyLinkedListNode{
+		prev:  nil,
 		value: val,
 		next:  nil,
 	}
-
-	doublyLength++
-	fmt.Println("DoublyHead remains: ", n.value)
+	if l.head == nil {
+		l.head = newNode
+		l.length++
+		return
+	}
+	current := l.head
+	for current.next != nil {
+		current = current.next
+	}
+	current.next = newNode
+	newNode.prev = current
+	l.length++
+	fmt.Println("DoublyHead remains:", l.head.value)
 }
 
-func (n *DoublyLinkedListNode) Delete(val int) {
-	if n.Length() <= 1 {
-		// no node will be deleted if we have a single node in our list
+func (l *DoublyLinkedList) Delete(val int) {
+	if l.length <= 1 {
 		fmt.Println("Your linked list has less than 2 nodes")
 		return
 	}
-
-	current := n
-
+	current := l.head
 	for current != nil {
 		if current.value == val {
 			if current.prev == nil {
-				DoublyHead = current.next
-				if DoublyHead != nil {
-					DoublyHead.prev = nil
+				l.head = current.next
+				if l.head != nil {
+					l.head.prev = nil
 				}
 			} else if current.next == nil {
 				current.prev.next = nil
@@ -90,44 +71,45 @@ func (n *DoublyLinkedListNode) Delete(val int) {
 				current.prev.next = current.next
 				current.next.prev = current.prev
 			}
-			doublyLength--
+			l.length--
+			return
 		}
 		current = current.next
 	}
 }
 
-func (n *DoublyLinkedListNode) List() {
-	if n.Length() == 0 {
+func (l *DoublyLinkedList) List() {
+	if l.length == 0 {
 		fmt.Println("No nodes in your list")
 		return
 	}
-
-	current := n
-
+	current := l.head
 	for current != nil {
-		fmt.Println("Value: ", current.value, "Prev: ", current.prev, "Next: ", current.next)
+		fmt.Println("Value:", current.value, "Prev:", current.prev, "Next:", current.next)
 		current = current.next
 	}
 }
 
-func (n *DoublyLinkedListNode) Clear() {
-	fmt.Println("LOL NO NEED TO FREE MEMORY")
-	DoublyHead = nil
+func (l *DoublyLinkedList) Clear() {
+	l.head = nil
+	l.length = 0
 }
 
 func DemonstrateDoublyLinkedList() {
-	DoublyHead.Prepend(5)
-	DoublyHead.Append(6)
-	DoublyHead.Prepend(7)
-	DoublyHead.Append(8)
-	DoublyHead.Prepend(9)
-	DoublyHead.Append(10)
-	DoublyHead.Prepend(1)
+	list := &DoublyLinkedList{}
+	list.Prepend(5)
+	list.Append(6)
+	list.Prepend(7)
+	list.Append(8)
+	list.Prepend(9)
+	list.Append(10)
+	list.Prepend(1)
 
-	DoublyHead.List()
-	DoublyHead.Delete(1)
-	DoublyHead.Delete(6)
-	DoublyHead.List()
-	fmt.Println("Length: ", DoublyHead.Length())
-	DoublyHead.Clear()
+	list.List()
+	list.Delete(1)
+	list.Delete(6)
+	list.List()
+	fmt.Println("Length:", list.Length())
+	list.Clear()
+	fmt.Println("Cleared List:", list.head)
 }

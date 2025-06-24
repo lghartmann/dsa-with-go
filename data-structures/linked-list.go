@@ -2,119 +2,101 @@ package datastructures
 
 import "fmt"
 
-var linkedLength int = 0
-var LinkedHead *LinkedListNode
+type LinkedList struct {
+	head   *LinkedListNode
+	length int
+}
 
 type LinkedListNode struct {
-	value int
+	value interface{}
 	next  *LinkedListNode
 }
 
-func (n *LinkedListNode) Length() int {
-	return linkedLength
+func (l *LinkedList) Length() int {
+	return l.length
 }
 
-func (n *LinkedListNode) Prepend(val int) {
-	if n == nil {
-		LinkedHead = &LinkedListNode{
-			value: val,
-			next:  nil,
-		}
-		linkedLength++
-		return
-	}
-
+func (l *LinkedList) Prepend(val interface{}) {
 	newNode := &LinkedListNode{
 		value: val,
-		next:  n,
+		next:  l.head,
 	}
-	linkedLength++
-
-	fmt.Println("New head: ", val)
-	LinkedHead = newNode
+	l.head = newNode
+	l.length++
 }
 
-func (n *LinkedListNode) Append(val int) {
-	if n == nil {
-		LinkedHead = &LinkedListNode{
-			value: val,
-			next:  nil,
-		}
-		linkedLength++
-		return
-	}
-
+func (l *LinkedList) Append(val interface{}) {
 	newNode := &LinkedListNode{
 		value: val,
 		next:  nil,
 	}
-	current := n
-
+	if l.head == nil {
+		l.head = newNode
+		l.length++
+		return
+	}
+	current := l.head
 	for current.next != nil {
 		current = current.next
 	}
-
 	current.next = newNode
-	fmt.Println("LinkedHead remains: ", n.value)
-	linkedLength++
+	l.length++
 }
 
-func (n *LinkedListNode) Delete(val int) {
-	if n.Length() <= 1 {
-		// no node will be deleted if we have a single node in our list
-		fmt.Println("Your linked list has less than 2 nodes")
+func (l *LinkedList) Delete(val interface{}) {
+	if l.head == nil {
 		return
 	}
-
-	var oldNode *LinkedListNode = nil
-	currentNode := n
-
-	for currentNode != nil {
-		if currentNode.value == val {
-			if oldNode == nil {
-				LinkedHead = n.next
-			} else {
-				oldNode.next = currentNode.next
-			}
-			linkedLength--
-		}
-		oldNode = currentNode
-		currentNode = currentNode.next
-	}
-}
-
-func (n *LinkedListNode) List() {
-	if n.Length() == 0 {
-		fmt.Println("No nodes in your list")
+	if l.head.value == val {
+		l.head = l.head.next
+		l.length--
 		return
 	}
-
-	current := n
+	prev := l.head
+	current := l.head.next
 	for current != nil {
-		fmt.Println("Value: ", current.value, "Next: ", current.next)
+		if current.value == val {
+			prev.next = current.next
+			l.length--
+			return
+		}
+		prev = current
 		current = current.next
 	}
 }
 
-func (n *LinkedListNode) Clear() {
-	fmt.Println("LOL NO NEED TO FREE MEMORY")
-	LinkedHead = nil
+func (l *LinkedList) List() {
+	if l.length == 0 {
+		fmt.Println("No nodes in your list")
+		return
+	}
+	current := l.head
+	for current != nil {
+		fmt.Println("Value:", current.value, "Next:", current.next)
+		current = current.next
+	}
+}
+
+func (l *LinkedList) Clear() {
+	l.head = nil
+	l.length = 0
 }
 
 func DemonstrateLinkedList() {
-	LinkedHead.Prepend(5)
-	LinkedHead.Append(6)
-	LinkedHead.Prepend(7)
-	LinkedHead.Append(8)
-	LinkedHead.Prepend(9)
-	LinkedHead.Append(10)
-	LinkedHead.Prepend(1)
+	list := &LinkedList{}
+	list.Prepend(5)
+	list.Append(6)
+	list.Prepend(7)
+	list.Append(8)
+	list.Prepend(9)
+	list.Append(10)
+	list.Prepend(1)
 
-	LinkedHead.List()
-	LinkedHead.Delete(1)
-	LinkedHead.Delete(6)
-	LinkedHead.List()
-	fmt.Println(LinkedHead.Length())
-	LinkedHead.Clear()
-	fmt.Println("Cleared List: ", LinkedHead)
+	list.List()
+	list.Delete(1)
+	list.Delete(6)
+	list.List()
+	fmt.Println(list.Length())
+	list.Clear()
+	fmt.Println("Cleared List:", list.head)
 }
